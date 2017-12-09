@@ -1,0 +1,31 @@
+PART 1: List and Create Blog Posts
+PART 2: Display Individual Entries
+        a) Use Case 1
+        b) Use Case 2
+OPTIONAL BONUS MISSIONS:
+    Add a CSS stylesheet to improve the style of your app. 
+    Display the posts in order of most recent to the oldest (the opposite of the current order).
+
+PART ONE - COMPLETE THIS FIRST!!!
+
+If you think about it for a minute, the behavior of creating a blog post, saving it to the database, and displaying blog posts is essentially what we did with tasks in the Get It Done! example app. The main difference between the two is that the blog post submission form and blog post listings will be on separate pages in our Build-a-Blog app. Go back to your code for Get It Done!, or use ours, and use it as a model to set up the beginnings of your blog app.
+
+First, set up the blog so that the "add a new post" form and the blog listings are on the same page, as with Get It Done!, and then separate those portions into separate routes, handler classes, and templates. For the moment, when a user submits a new post, redirect them to the main blog page.
+
+Once you have made a Blog class with the necessary properties (i.e., an id, title, and body), you'll need to initialize your database:
+(flask-env) $ python
+from main import db, Blog
+db.create_all()
+db.session.commit()
+Make sure you can say the following about your app:
+
+The /blog route displays all the blog posts.
+
+You're able to submit a new post at the /newpost route. After submitting a new post, your app displays the main blog page.
+
+You have two templates, one each for the /blog (main blog listings) and /newpost (post new blog entry) views. Your templates should extend a base.html template which includes some boilerplate HTML that will be used on each page.
+
+In your base.html template, you have some navigation links that link to the main blog page and to the add new blog page.
+
+If either the blog title or blog body is left empty in the new post form, the form is rendered again, with a helpful error message and any previously-entered content in the same form inputs.
+By the time you've checked off each of these, your app should behave like this:
