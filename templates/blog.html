@@ -4,9 +4,39 @@
 
     <h1>Build a Blog</h1>
 
-
-
     <h2>LIST ALL BLOG POSTS HERE!</h2>
+
+    <ul>
+        {% for blog in blog_posts %}
+        <li> {{blog.title, blog.body}} </li>
+        {% endfor %}
+    </ul>
+
+
+<!-- 
+    <ul>
+        {% for blog in blog_posts %}
+        <li> {{blog}} </li>
+        {% endfor %}
+    </ul> -->
+<!--     
+{% if blog_posts|length == 0 %}
+<p>No posts yet</p>
+{% else %}
+
+    <ul>
+        {% for task in tasks %}
+        <li>{{task.name}}
+            <form method='POST' action='/delete-task' style='display:inline-block;'>
+                <input type='hidden' name='task-id' value='{{task.id}}' />
+                <input type='submit' value='Done!' />
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endif %} -->
+
 <!-- 
     <hr />
 

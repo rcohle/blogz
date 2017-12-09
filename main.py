@@ -21,11 +21,22 @@ class Blog(db.Model):
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
-    return render_template('/blog.html')
+
+    blog_posts = Blog.query.all()
+    return render_template('/blog.html', blog_posts=blog_posts)
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
+
+    if request.method == 'POST':
+        title = request.form['title']
+        body = request.form['body']
+        db.session.add(Blog(title,body))
+        db.session.commit()
+
+    #blog_posts = Blog.query.all()
+
     return render_template('/newpost.html')
 
 
