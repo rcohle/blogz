@@ -1,7 +1,9 @@
 PART 1: List and Create Blog Posts
+
 PART 2: Display Individual Entries
         a) Use Case 1
         b) Use Case 2
+
 OPTIONAL BONUS MISSIONS:
     Add a CSS stylesheet to improve the style of your app. 
     Display the posts in order of most recent to the oldest (the opposite of the current order).
