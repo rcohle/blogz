@@ -34,10 +34,20 @@ def new_post():
         body = request.form['body']
         db.session.add(Blog(title,body))
         db.session.commit()
-
-    #blog_posts = Blog.query.all()
-
+        return redirect('/blog')
+    #return redirect('/blog')
     return render_template('/newpost.html')
+
+# @app.route('/newpost_fromhome', methods=['GET'])
+# def newpost_fromhome():
+
+#     return render_template('/newpost.html')
+
+# @app.route('/newpost', methods=['GET'])
+# def new_post_from_blog():
+
+
+
 
 
 # class Task(db.Model):

@@ -4,11 +4,12 @@
 
     <h1>Build a Blog</h1>
 
-    <h2>LIST ALL BLOG POSTS HERE!</h2>
+    <h2>ALL BLOG POSTS</h2>
 
     <ul>
         {% for blog in blog_posts %}
         <li> {{blog.title, blog.body}} </li>
+        <hr />
         {% endfor %}
     </ul>
 
