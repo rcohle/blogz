@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template
+from flask import Flask, request, redirect, render_template,url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -23,15 +23,21 @@ class Blog(db.Model):
 def blog():
 
     blog_posts = Blog.query.all()
-
-
     return render_template('/blog.html', blog_posts=blog_posts)
+
+
+
+@app.route('/post')
+def post():
+        
+    post_id = Blog.query.filter_by(id='1').first()
+    return render_template('/post.html',post_id=post_id)
+
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
 
-    
     error_title = 'Please enter a title for your blog post'
     error_body = 'Please enter content for your blog post'
     error_empty_title = ''
