@@ -51,28 +51,28 @@ def new_post():
     else:
         return render_template('/newpost.html',error_empty_title=error_empty_title,error_empty_body=error_empty_body)
 
-
+@app.route('/post', methods=['GET'])
+def post():
+    #post = the post's id to display the correct post-
+    #get the id, attach it to the end of the link to post
+    
+    
+    #blog_post = Blog.query.all()
+    post = Blog.query.all()
+    blog_post = post[11].title + post[11].body
 
     
-    #return redirect('/blog')
-
-
-        
-
-
-
-    #return render_template('newpost.html')
     
-    # if request.method == 'POST' and title == '':
-    #     error_empty_title = error_title
-    # if request.method == 'POST' and body == '':
-    #     error_empty_body = error_body
-    # return render_template('/newpost.html', error_empty_title=error_empty_title, error_empty_body=error_empty_body)
+    return render_template('/post.html',blog_post=blog_post)
 
-    # if request.method == 'POST' and error_empty_body == '' and error_empty_title == '':
-    #     db.session.add(Blog(title,body))
-    #     db.session.commit()
-    # return redirect('/blog')
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run()
