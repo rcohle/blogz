@@ -23,6 +23,8 @@ class Blog(db.Model):
 def blog():
 
     blog_posts = Blog.query.all()
+
+
     return render_template('/blog.html', blog_posts=blog_posts)
 
 
@@ -34,7 +36,6 @@ def new_post():
     error_body = 'Please enter content for your blog post'
     error_empty_title = ''
     error_empty_body = ''
-
 
     if request.method == 'POST':
         title = request.form['title']
@@ -50,29 +51,6 @@ def new_post():
         return redirect('/blog')
     else:
         return render_template('/newpost.html',error_empty_title=error_empty_title,error_empty_body=error_empty_body)
-
-@app.route('/post', methods=['GET'])
-def post():
-    #post = the post's id to display the correct post-
-    #get the id, attach it to the end of the link to post
-    
-    
-    #blog_post = Blog.query.all()
-    post = Blog.query.all()
-    blog_post = post[11].title + post[11].body
-
-    
-    
-    return render_template('/post.html',blog_post=blog_post)
-
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     app.run()

@@ -8,7 +8,7 @@
 
     <ul>
         {% for blog in blog_posts %}
-        <li>{{blog.title}}<p>{{blog.body}}</p></li>
+        <li><a href="/blog?id={{blog.id}}"{{blog.title}}</a><p>{{blog.body}}</p></li>
         <hr />
         {% endfor %}
     </ul>
