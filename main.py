@@ -26,11 +26,10 @@ def blog():
     return render_template('/blog.html', blog_posts=blog_posts)
 
 
-
 @app.route('/post')
 def post():
-        
-    post_id = Blog.query.filter_by(id='1').first()
+    id = request.args.get('id')
+    post_id = Blog.query.get(id)
     return render_template('/post.html',post_id=post_id)
 
 
@@ -55,6 +54,10 @@ def new_post():
         db.session.add(Blog(title,body))
         db.session.commit()
         return redirect('/blog')
+
+        #post_id = request.args.get('id','title','body')  #NEW
+        #post_id2 = Blog.query.get(id)
+        #return ('/post.html', post_id=post_id2)  #changed from redirect to blog
     else:
         return render_template('/newpost.html',error_empty_title=error_empty_title,error_empty_body=error_empty_body)
 
