@@ -25,13 +25,11 @@ def blog():
     blog_posts = Blog.query.all()
     return render_template('/blog.html', blog_posts=blog_posts)
 
-
 @app.route('/post')
 def post():
     id = request.args.get('id')
     post_id = Blog.query.get(id)
     return render_template('/post.html',post_id=post_id)
-
 
 
 @app.route('/newpost', methods=['POST', 'GET'])
