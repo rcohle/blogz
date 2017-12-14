@@ -7,7 +7,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:root@local
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
-
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True) #primary key for blog entries
@@ -18,20 +17,26 @@ class Blog(db.Model):
         self.title = title
         self.body = body
 
+# redirects from 'home page' to blog page
+@app.route('/')
+def index():
+    return redirect('/blog')
 
+# displays all blogs
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
 
     blog_posts = Blog.query.all()
     return render_template('/blog.html', blog_posts=blog_posts)
 
+# displays posts individually
 @app.route('/post')
 def post():
     id = request.args.get('id')
     post_id = Blog.query.get(id)
     return render_template('/post.html',post_id=post_id)
 
-
+# allow user to add a new post
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
 
@@ -49,13 +54,21 @@ def new_post():
             error_empty_body = error_body
 
     if request.method == 'POST' and error_empty_body == '' and error_empty_title == '':
+        
         db.session.add(Blog(title,body))
         db.session.commit()
-        return redirect('/blog')
 
-        #post_id = request.args.get('id','title','body')  #NEW
-        #post_id2 = Blog.query.get(id)
-        #return ('/post.html', post_id=post_id2)  #changed from redirect to blog
+        id = request.args.get('id','title','body')
+
+        post_id = Blog.query.get(id)
+        
+        #post_id = Blog.query.filter_by(id=id).first()
+        
+        #return redirect('/post', post_id=post_id)
+        
+        return redirect(url_for('post', post_id=post_id))
+        #return render_template('post.html', post_id=post_id)
+
     else:
         return render_template('/newpost.html',error_empty_title=error_empty_title,error_empty_body=error_empty_body)
 
