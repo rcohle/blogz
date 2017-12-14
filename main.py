@@ -55,19 +55,23 @@ def new_post():
 
     if request.method == 'POST' and error_empty_body == '' and error_empty_title == '':
         
-        db.session.add(Blog(title,body))
+        new_post = Blog(title,body)
+
+        db.session.add(new_post)
         db.session.commit()
-
-        id = request.args.get('id','title','body')
-
-        post_id = Blog.query.get(id)
         
+        #post_id1 = request.args.get('id')
+        
+        post_id = Blog.query.get(new_post.id)
+        
+        #post_id = Blog.query.filter_by().first()
+        #post_id = Blog.query.get(id)
         #post_id = Blog.query.filter_by(id=id).first()
         
-        #return redirect('/post', post_id=post_id)
+        #return redirect('/post')
+        #return redirect(url_for('post', post_id=post_id))
         
-        return redirect(url_for('post', post_id=post_id))
-        #return render_template('post.html', post_id=post_id)
+        return render_template('post.html', post_id=post_id)
 
     else:
         return render_template('/newpost.html',error_empty_title=error_empty_title,error_empty_body=error_empty_body)
