@@ -6,21 +6,25 @@
 
     <form action='/newpost' , method='post'>
 
-        <p><label>Title for your new blog:<p>
-            <input type="text" name='title' value="{{ request.form['title'] }}" />
+        <p>
+            <p><label>Title for your new blog:</p>
+            <input type="text" name='title' value="{{ request.form['title'] }}"/>
+            </label>
         </p>
-        </label></p>
-        <p> {{error_empty_title}} </p>
-
         
-        <p><label>Your new blog: 
-        </p></label>
-        <textarea name='body'>{{ request.form['body'] }}</textarea>
+        <p>{{error_empty_title}}</p>
 
-        <p> {{error_empty_body}} </p>
         
         <p>
-        <input type="submit" value='Add Entry' />
+            <label>Your new blog:</label>
+        </p>
+
+        <textarea name='body'>{{ request.form['body'] }}</textarea>
+        
+        <p>{{error_empty_body}}</p>
+        
+        <p>
+            <input type="submit" value='Add Entry' />
         </p>
 
     </form>
