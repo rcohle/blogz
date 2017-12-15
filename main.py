@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:root@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:blogz@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
@@ -31,15 +31,14 @@ def index():
 def blog():
 
     blog_posts = Blog.query.all()
-    return render_template('/blog.html', blog_posts=blog_posts)
+    blog_id = request.args.get('id')
 
-###########################################################################
-# display posts individually
-@app.route('/post')
-def post():
-    id = request.args.get('id')
-    post_id = Blog.query.get(id)
-    return render_template('/post.html',post_id=post_id)
+    if blog_id:
+        id = request.args.get('id')
+        post_id = Blog.query.get(id)
+        return render_template('/post.html',post_id=post_id)
+    
+    return render_template('/blog.html', blog_posts=blog_posts)
 
 ###########################################################################
 # add new post
@@ -63,7 +62,7 @@ def new_post():
         db.session.add(new_post)
         db.session.commit()
         post_id = Blog.query.get(new_post.id)
-        return render_template('post.html', post_id=post_id)
+        return redirect('/blog?id={0}'.format(new_post.id))
     else:
         return render_template('/newpost.html',error_empty_title=error_empty_title,error_empty_body=error_empty_body)
 
