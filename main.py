@@ -9,15 +9,35 @@ db = SQLAlchemy(app)
 
 ###########################################################################
 
+"""NEED TO ADD PROPERTY OWNER_ID"""
+"""foreign key linking the user's id to the blog post"""
+
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True) #primary key for blog entries
     title = db.Column(db.String(250)) #will go into title area
     body = db.Column(db.String(2048)) #will go into body area
+    owner_id = db.Column(db.Integer(100))
 
-    def __init__(self, title, body):
+    def __init__(self, title, body, owner_id):
         self.title = title
         self.body = body
+        self.owner_id = owner_id
+        """And we'll need to amend the Blog constructor so that it takes in a user object """
+
+
+""" modify User class to this file"""
+''' class User(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(30), unique=True)
+    password = db.Column(db.String(20))
+    blogs = db.relationship('Blog', backref='owner')
+
+    def __init__(self, username, password, blogs):
+        self.username = username
+        self.password = password
+        self.blogs = blogs '''
 
 ###########################################################################
 # redirect from 'home page' to blog page
@@ -42,6 +62,11 @@ def blog():
 
 ###########################################################################
 # add new post
+
+''' And think about what you'll need to do in your 
+/newpost route handler function since there is a new parameter 
+to consider when creating a blog entry. '''
+
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
     error_title = 'Please enter a title for your blog post'
