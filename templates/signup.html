@@ -2,7 +2,40 @@
 
 {% block content %}
 
-<h1>Sign Up to Blogz</h1>
+<h1>Register to Blogz</h1>
+<form action="/signup" method="post">
+    <table>
+        <tr>
+
+            <p class=error>{{ existing_message }} </p>
+            <td><label for="email">Username</label></td>
+            <td>
+                <input name="username" type="text" value="{{ username }}">
+                <p class=error> {{ empty_error_user_name }} </p>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="password">Password</label></td>
+            <td>
+                <input name="password" type="password">
+                <p class=error> {{ empty_error_password }} </p>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="verify">Verify Password</label></td>
+            <td>
+                <input name="verify" type="password">
+                <p class=error> {{ match_error }} </p>
+                <p class=error> {{ empty_error_verify_password }} </p>
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Register">
+</form>
+
+
+
+<!-- <h1>Sign Up to Blogz</h1>
 <form action="/signup" method="post">
     <table>
         <tr>
@@ -52,6 +85,6 @@
 
         <input type="Sign Up" />
 
-    </form>
+    </form> -->
 
 {% endblock %}
