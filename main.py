@@ -33,19 +33,37 @@ class User(db.Model):
         self.username = username
         self.password = password
 
+
+###########################################################################
+
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'signup','blog','index']
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/login')
+
 ###########################################################################
 # redirect from 'home page' to blog page
 @app.route('/')
 def index():
-    return redirect('/blog')
+    users = User.query.all()
+    return render_template('index.html',users=users)
+
+
+# def blog():
+
+#     blog_posts = Blog.query.all()
+#     blog_id = request.args.get('id')
+
+#     if blog_id:
+#         id = request.args.get('id')
+#         post_id = Blog.query.get(id)
+#         return render_template('/post.html',post_id=post_id)
+    
+#     return render_template('/blog.html', blog_posts=blog_posts)
 
 ###########################################################################
-    # '''     @app.before_request
-    # def require_login():
-    #     allowed_routes = ['login', 'register']
-    #     if request.endpoint not in allowed_routes and 'email' not in session:
-    #         return redirect('/login')
-    # '''
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -60,6 +78,12 @@ def login():
             flash('User password incorrect, or user does not exist', 'error')
 
     return render_template('login.html')
+##########################################################################
+
+@app.route('/logout')
+def logout():
+    del session['username']
+    return redirect('/blog')
 
 ###########################################################################
 
@@ -159,6 +183,8 @@ def new_post():
     error_body = 'Please enter content for your blog post'
     error_empty_title = ''
     error_empty_body = ''
+
+    owner = User.query.filter_by(username=session['username']).first()
 
     if request.method == 'POST':
         title = request.form['title']
