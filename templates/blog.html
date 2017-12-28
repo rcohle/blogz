@@ -2,25 +2,15 @@
 
 {% block content %}
 
-    <h1>BLOGZ</h1>
+    <h1>Blogz</h1>
+    <hr />
 
-    <ul>
+    {% for blog in blog_posts %}
+    <a class="blog_title" href="./blog?id={{blog.id}}">{{blog.title}}</a>
     
-        {% for blog in blog_posts %}
-        
-        <li>
-            <a href="/blog?id={{blog.id}}">{{blog.title}}
-            </a>
-        
-            <p>
-                {{blog.body}}
-            </p>
-        </li>
-        
-        <hr />
-        
-        {% endfor %}
-    
-    </ul>
+    <p>{{blog.body}}</p>
+    <p>Authored by <a href="./blog?user={{blog.owner.id}}">{{blog.owner.username}}</a></p>
+    <hr />
+    {% endfor %}
 
 {% endblock %}

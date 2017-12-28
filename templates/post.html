@@ -2,8 +2,9 @@
 
 {% block content %}
 
-    <h1>{{post_id.title}}</h1>
+    <h1>{{blog.title}}</h1>
+    <p>Author: <a href="/blog?user={{blog.owner.id}}">{{blog.owner.username}}</a></p>
     <hr />
-    <p>{{post_id.body}}</p>
+    <p>{{blog.body}}</p>
 
 {% endblock %}

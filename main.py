@@ -33,7 +33,6 @@ class User(db.Model):
         self.username = username
         self.password = password
 
-
 ###########################################################################
 
 @app.before_request
@@ -41,27 +40,13 @@ def require_login():
     allowed_routes = ['login', 'signup','blog','index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
-
 ###########################################################################
+
 # redirect from 'home page' to blog page
 @app.route('/')
 def index():
     users = User.query.all()
-    return render_template('index.html',users=users)
-
-
-# def blog():
-
-#     blog_posts = Blog.query.all()
-#     blog_id = request.args.get('id')
-
-#     if blog_id:
-#         id = request.args.get('id')
-#         post_id = Blog.query.get(id)
-#         return render_template('/post.html',post_id=post_id)
-    
-#     return render_template('/blog.html', blog_posts=blog_posts)
-
+    return render_template('index.html', users = users)
 ###########################################################################
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -84,7 +69,6 @@ def login():
 def logout():
     del session['username']
     return redirect('/blog')
-
 ###########################################################################
 
 @app.route('/signup', methods=['POST', 'GET'])
@@ -157,23 +141,27 @@ def signup():
             return render_template('signup.html', empty_error_user_name=empty_error_user_name, empty_error_password=empty_error_password, match_error=match_error, empty_error_verify_password=empty_error_verify_password, username=username, password=password)
 
     return render_template('signup.html')
-
 ###########################################################################
+
 # display all blogs
 
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
 
-    blog_posts = Blog.query.all()
-    blog_id = request.args.get('id')
+    if 'id' in request.args or 'user' in request.args:
+        if 'id' in request.args:
+            id = request.args.get('id')
+            blog = Blog.query.get(id)
+            return render_template('post.html', blog=blog)
 
-    if blog_id:
-        id = request.args.get('id')
-        post_id = Blog.query.get(id)
-        return render_template('/post.html',post_id=post_id)
-    
-    return render_template('/blog.html', blog_posts=blog_posts)
-
+        elif 'user' in request.args:
+            userID = int(request.args.get('user'))
+            owner = User.query.get(userID)
+            blog_posts = Blog.query.filter_by(owner=owner).all()
+            return render_template('blog.html', blog_posts=blog_posts)
+    else:
+        blog_posts = Blog.query.all()
+        return render_template('blog.html', blog_posts=blog_posts)
 ###########################################################################
 # add new post
 
