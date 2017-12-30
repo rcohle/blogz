@@ -35,20 +35,24 @@ class User(db.Model):
 
 ###########################################################################
 
+#need to be logged in to access certain pages
 @app.before_request
 def require_login():
     allowed_routes = ['login', 'signup','blog','index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
+
 ###########################################################################
 
-# redirect from 'home page' to blog page
+# show all users on index page
 @app.route('/')
 def index():
     users = User.query.all()
     return render_template('index.html', users = users)
+
 ###########################################################################
 
+#log in, verify password
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -63,14 +67,18 @@ def login():
             flash('User password incorrect, or user does not exist', 'error')
 
     return render_template('login.html')
+
 ##########################################################################
 
+#delete user session
 @app.route('/logout')
 def logout():
     del session['username']
     return redirect('/blog')
+
 ###########################################################################
 
+# signup a user - tons of validation checks and error messages to pass to template
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
@@ -141,30 +149,32 @@ def signup():
             return render_template('signup.html', empty_error_user_name=empty_error_user_name, empty_error_password=empty_error_password, match_error=match_error, empty_error_verify_password=empty_error_verify_password, username=username, password=password)
 
     return render_template('signup.html')
+
 ###########################################################################
 
-# display all blogs
-
+# display all blogs unless clicking from /blog page with a GET for userid or blogid in request
+# in that case send to author page or blog post page
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
 
-    if 'id' in request.args or 'user' in request.args:
-        if 'id' in request.args:
-            id = request.args.get('id')
-            blog = Blog.query.get(id)
-            return render_template('post.html', blog=blog)
+    if 'id' in request.args:
+        id = request.args.get('id')
+        blog = Blog.query.get(id)
+        return render_template('post.html', blog=blog)
 
-        elif 'user' in request.args:
-            userID = int(request.args.get('user'))
-            owner = User.query.get(userID)
-            blog_posts = Blog.query.filter_by(owner=owner).all()
-            return render_template('blog.html', blog_posts=blog_posts)
+    elif 'user' in request.args:
+        user_id = int(request.args.get('user'))
+        owner = User.query.get(user_id)
+        blog_posts = Blog.query.filter_by(owner=owner).all()
+        return render_template('blog.html', blog_posts=blog_posts)
+
     else:
         blog_posts = Blog.query.all()
         return render_template('blog.html', blog_posts=blog_posts)
-###########################################################################
-# add new post
 
+###########################################################################
+
+# add new post
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
     error_title = 'Please enter a title for your blog post'

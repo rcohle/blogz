@@ -6,10 +6,10 @@
     <hr />
 
     {% for blog in blog_posts %}
-    <a class="blog_title" href="./blog?id={{blog.id}}">{{blog.title}}</a>
+    <h3><a class="blog_title" href="./blog?id={{blog.id}}">{{blog.title}}</a></h3>
     
-    <p>{{blog.body}}</p>
-    <p>Authored by <a href="./blog?user={{blog.owner.id}}">{{blog.owner.username}}</a></p>
+    <h4><p>{{blog.body}}</p></h4>
+    <h4><p>Authored by <a href="./blog?user={{blog.owner.id}}">{{blog.owner.username}}</a></p></h4>
     <hr />
     {% endfor %}
 

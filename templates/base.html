@@ -10,22 +10,33 @@
             }
             h1 {
                 text-align:left;
+                font: italic bold 25px Georgia, serif;
             }
+            body {
+                background-color: #ffcc00;
+            }
+            h3 {
+                font: italic bold 20px Georgia, serif;
+            }
+            h4 {
+                font: italic bold 12px/30px Georgia, serif;
+            }
+
         </style>
 </head>
 
 <body>
 
     <nav>
-        <a href='/blog'>Main Blog Page
+        <a href='/blog'>Main Blog Page//
         </a>
-        <a href='/newpost'>Add a Blog Entry
+        <a href='/newpost'>Add a Blog Entry//
         </a>
-        <a href='/login'>Log In
+        <a href='/login'>Log In //
         </a>
-        <a href='/signup'>Sign Up
+        <a href='/signup'>Sign Up//
         </a>
-        <a href='/logout'>Log Out
+        <a href='/logout'>Log Out//
         </a>
         <a href='/'>Home
         </a>
@@ -37,7 +48,7 @@
         <li class="{{category}}">{{message}}</li>
     {% endfor %}
     </ul>
-{% endwith %}
+    {% endwith %}
 
     {% block content %}
     {% endblock %}
