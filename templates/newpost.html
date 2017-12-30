@@ -4,28 +4,17 @@
 
     <h1>Blogz</h1>
 
-    <form action='/newpost' , method='post'>
+    <form action='/newpost', method='post'>
 
-        <p>
-            <p><label>Title for your new blog:</p>
-            <input type="text" name='title' value="{{ request.form['title'] }}"/>
-            </label>
-        </p>
+        <p><label>Title for your new blog:</p>
+        <p><input type="text" name='title' value="{{request.form['title']}}"/></label></p>
+        <p class=error>{{error_empty_title}}</p>        
         
-        <p>{{error_empty_title}}</p>
-
+        <p><label>Your new blog:</label></p>
+        <textarea name='body'>{{request.form['body']}}</textarea>
+        <p class=error>{{error_empty_body}}</p>
         
-        <p>
-            <label>Your new blog:</label>
-        </p>
-
-        <textarea name='body'>{{ request.form['body'] }}</textarea>
-        
-        <p>{{error_empty_body}}</p>
-        
-        <p>
-            <input type="submit" value='Add Entry' />
-        </p>
+        <p><input type="submit" value='Add Entry' /></p>
 
     </form>
 

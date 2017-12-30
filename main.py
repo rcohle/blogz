@@ -8,13 +8,11 @@ app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 app.secret_key = 'y337kGcys&zP3B112'
 
-###########################################################################
-
 class Blog(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True) #primary key for blog entries
-    title = db.Column(db.String(250)) #will go into title area
-    body = db.Column(db.String(2048)) #will go into body area
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(250))
+    body = db.Column(db.String(2048))
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __init__(self, title, body, owner):
@@ -33,26 +31,17 @@ class User(db.Model):
         self.username = username
         self.password = password
 
-###########################################################################
-
-#need to be logged in to access certain pages
 @app.before_request
 def require_login():
     allowed_routes = ['login', 'signup','blog','index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
-###########################################################################
-
-# show all users on index page
 @app.route('/')
 def index():
     users = User.query.all()
     return render_template('index.html', users = users)
 
-###########################################################################
-
-#log in, verify password
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
@@ -65,36 +54,26 @@ def login():
             return redirect('/newpost')
         else:
             flash('User password incorrect, or user does not exist', 'error')
-
+    
     return render_template('login.html')
 
-##########################################################################
-
-#delete user session
 @app.route('/logout')
 def logout():
     del session['username']
     return redirect('/blog')
 
-###########################################################################
-
-# signup a user - tons of validation checks and error messages to pass to template
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
-        # TODO - validate user's data
-    #error messages for failed validation
         error_empty = 'Empty... please supply requested information'
         error_spaces = 'Sorry, no spaces allowed'
         error_length = 'Please use more than 3 characters and less than 20'
         error_no_match = "Does not match first entry or not between 3 and 20 characters"
         error_symbols = 'Enter a valid email (one "@", one ".", no spaces)'
 
-        # user_name validation
-        #username = request.form['username']
         empty_error_user_name = ''
         if username == '':
             empty_error_user_name = error_empty
@@ -102,11 +81,8 @@ def signup():
             empty_error_user_name = error_length
         elif ' ' in username:
             empty_error_user_name = error_spaces
-
-        # password validation
-        #password = request.form['password']
+      
         empty_error_password = ''
-
         if password == '':
             empty_error_password = error_empty
             password = ''
@@ -117,11 +93,8 @@ def signup():
             empty_error_password = error_spaces
             password = ''
 
-        # verify_password validation
-        #verify_password = request.form['verify_password']
         match_error = ''
         empty_error_verify_password = ''
-
         if password == '':
             empty_error_verify_password = error_empty
             password == ''
@@ -130,7 +103,6 @@ def signup():
             password = ''
 
         existing_user = User.query.filter_by(username=username).first()
-
         if existing_user:
             existing_message = 'Duplicate user, please use login page'
             return render_template('signup.html',existing_message=existing_message)
@@ -144,16 +116,11 @@ def signup():
                 flash("Logged in")
             return render_template('newpost.html', username=username)
 
-        # failed validation result
         else:
             return render_template('signup.html', empty_error_user_name=empty_error_user_name, empty_error_password=empty_error_password, match_error=match_error, empty_error_verify_password=empty_error_verify_password, username=username, password=password)
 
     return render_template('signup.html')
 
-###########################################################################
-
-# display all blogs unless clicking from /blog page with a GET for userid or blogid in request
-# in that case send to author page or blog post page
 @app.route('/blog', methods=['POST', 'GET'])
 def blog():
 
@@ -172,9 +139,6 @@ def blog():
         blog_posts = Blog.query.all()
         return render_template('blog.html', blog_posts=blog_posts)
 
-###########################################################################
-
-# add new post
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
     error_title = 'Please enter a title for your blog post'
@@ -183,7 +147,6 @@ def new_post():
     error_empty_body = ''
 
     owner = User.query.filter_by(username=session['username']).first()
-
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
@@ -198,6 +161,7 @@ def new_post():
         db.session.commit()
         post_id = Blog.query.get(new_post.id)
         return redirect('/blog?id={0}'.format(new_post.id))
+    
     else:
         return render_template('/newpost.html',error_empty_title=error_empty_title,error_empty_body=error_empty_body)
 

@@ -5,42 +5,25 @@
 <head>
     <title>Blogz</title>
         <style>
-            .error {
-                color: red;
-            }
-            h1 {
-                text-align:left;
-                font: italic bold 25px Georgia, serif;
-            }
-            body {
-                background-color: #ffcc00;
-            }
-            h3 {
-                font: italic bold 20px Georgia, serif;
-            }
-            h4 {
-                font: italic bold 12px/30px Georgia, serif;
-            }
-
+            .error {color: red;}
+            h1 {text-align:left;font: italic bold 25px Georgia, serif;}
+            body {background-color: #ffcc00; margin: 30px}
+            h3 {font: italic bold 20px Georgia, serif;}
+            h4 {font: italic bold 15px Georgia, serif;}
+            .navigation {font: italic bold 15px Georgia, serif;}
         </style>
 </head>
 
 <body>
-
-    <nav>
-        <a href='/blog'>Main Blog Page//
-        </a>
-        <a href='/newpost'>Add a Blog Entry//
-        </a>
-        <a href='/login'>Log In //
-        </a>
-        <a href='/signup'>Sign Up//
-        </a>
-        <a href='/logout'>Log Out//
-        </a>
-        <a href='/'>Home
-        </a>
+    <nav class=navigation>
+        <a href='/'>Home (Author Directory)//</a>
+        <a href='/blog'>All Blog Posts//</a>
+        <a href='/login'>Log In //</a>
+        <a href='/newpost'>Make a Post//</a>
+        <a href='/logout'>Log Out//</a>
+        <a href='/signup'>Sign Up//</a>
     </nav>
+    <hr /><hr />
 
     {% with messages = get_flashed_messages(with_categories=True) %}
     <ul>
